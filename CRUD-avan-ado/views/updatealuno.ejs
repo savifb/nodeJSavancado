@@ -1,0 +1,42 @@
+<%- include('layout') %>
+    <div class="container">
+        <h2><% title%></h2>
+        <form action="/alunos/update/" method="POST">
+            <label class="col-sm-2 col-form-label">Selecione o Aluno</label>
+            <select class="form-control" id="aluno" name="alunoId" onchange="preencherCampos()">
+                <option value="">Selecione um aluno</option>
+                <% alunos.forEach(aluno => { %>
+                    <option value="<%= aluno.id %>"><%= aluno.nome %></option>
+                <% }); %>
+            </select>
+    </div>
+    <br><br>
+    <div class="container">
+            <div class="row mb-2">
+                <label class="col-sm-2 col-form-label" >Nome</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-lg" id="nome" name="nome"  required>
+                </div>
+              
+            </div>
+            <div class="row mb-2">                
+                <label class="col-sm-2 col-form-label">Idade</label>
+                <div class="col-sm-10">
+                <input type="number" class="form-control form-control-lg" id="idade" name="idade" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </form>
+    </div>
+    <script >
+    function preencherCampos() {
+    const alunoId = document.getElementById('aluno').value;
+    fetch(`/alunos/update/${alunoId}`)
+        .then(response => response.json())
+        .then(aluno => {
+            document.getElementById('nome').value = aluno.nome;
+            document.getElementById('idade').value = aluno.idade;
+        })
+        .catch(error => console.error('Erro ao buscar aluno:', error));
+}
+    </script>
