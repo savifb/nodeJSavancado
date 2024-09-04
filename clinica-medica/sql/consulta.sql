@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS clinica;
+USE clinica;
+
+CREATE TABLE IF NOT EXISTS paciente (
+  cpf VARCHAR(11) PRIMARY KEY NOT NULL,
+  nomeCompleto VARCHAR(100) NOT NULL,
+  idade INT(3) NOT NULL,
+  diaMarcado DATE NOT NULL,
+  horaMarcada TIME NOT NULL
+);

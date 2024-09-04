@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<h1>Lista de Pacientes</h1>
+<% if (pacientes.length === 0) { %>
+  <p>Tabela vazia</p>
+<% } else { %>
+  <ul>
+    <% pacientes.forEach(paciente => { %>
+      <li>
+        <%= paciente.nomeCompleto %> - <%= paciente.cpf %>
+        <a href="/pacientes/<%= paciente.cpf %>/edit">Editar</a>
+        <form action="/pacientes/<%= paciente.cpf %>?_method=DELETE" method="POST" style="display:inline;">
+          <button type="submit">Apagar</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+</div> <!-- Fechamento da div.container -->
+</body>
+</html>

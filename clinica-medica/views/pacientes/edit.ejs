@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<h1>Editar Paciente</h1>
+<form action="/pacientes/<%= paciente.cpf %>?_method=PUT" method="POST">
+  <label for="cpf">CPF:</label>
+  <input type="text" id="cpf" name="cpf" value="<%= paciente.cpf %>" readonly><br>
+  <label for="nomeCompleto">Nome Completo:</label>
+  <input type="text" id="nomeCompleto" name="nomeCompleto" value="<%= paciente.nomeCompleto %>" required><br>
+  <label for="idade">Idade:</label>
+  <input type="number" id="idade" name="idade" value="<%= paciente.idade %>" required><br>
+  <label for="diaMarcado">Dia Marcado:</label>
+  <input type="date" id="diaMarcado" name="diaMarcado" value="<%= paciente.diaMarcado.toISOString().split('T')[0] %>" required><br>
+  <label for="horaMarcada">Hora Marcada:</label>
+  <input type="time" id="horaMarcada" name="horaMarcada" value="<%= paciente.horaMarcada %>" required><br>
+  <button type="submit">Atualizar</button>
+</form>
+<a href="/pacientes">Voltar</a>
+</body>
+</html>

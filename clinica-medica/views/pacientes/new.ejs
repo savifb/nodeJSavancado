@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<h1>Adicionar Paciente</h1>
+<form action="/pacientes" method="POST">
+  <label for="cpf">CPF:</label>
+  <input type="text" id="cpf" name="cpf" required><br>
+  <label for="nomeCompleto">Nome Completo:</label>
+  <input type="text" id="nomeCompleto" name="nomeCompleto" required><br>
+  <label for="idade">Idade:</label>
+  <input type="number" id="idade" name="idade" required><br>
+  <label for="diaMarcado">Dia Marcado:</label>
+  <input type="date" id="diaMarcado" name="diaMarcado" required><br>
+  <label for="horaMarcada">Hora Marcada:</label>
+  <input type="time" id="horaMarcada" name="horaMarcada" required><br>
+  <button type="submit">Adicionar</button>
+</form>
+<a href="/pacientes">Voltar</a>
+</body>
+</html>
