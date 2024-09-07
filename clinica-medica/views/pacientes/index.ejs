@@ -1,20 +1,61 @@
-<%- include('../partials/header') %>
-<h1>Lista de Pacientes</h1>
-<% if (pacientes.length === 0) { %>
-  <p>Tabela vazia</p>
-<% } else { %>
-  <ul>
-    <% pacientes.forEach(paciente => { %>
-      <li>
-        <%= paciente.nomeCompleto %> - <%= paciente.cpf %>
-        <a href="/pacientes/<%= paciente.cpf %>/edit">Editar</a>
-        <form action="/pacientes/<%= paciente.cpf %>?_method=DELETE" method="POST" style="display:inline;">
-          <button type="submit">Apagar</button>
-        </form>
-      </li>
-    <% }) %>
-  </ul>
-<% } %>
-</div> <!-- Fechamento da div.container -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lista de Pacientes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .content {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/header') %>
+  <div class="container mt-5 content">
+    <h1 class="mb-4">Lista de Pacientes</h1>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <% if (pacientes.length === 0) { %>
+      <p class="alert alert-warning">Seja bem-vindo, seus agendamentos aparecerão aqui</p>
+    <% } else { %>
+      <ul class="list-group">
+        <% pacientes.forEach(paciente => { %>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>Nome:</strong> <%= paciente.nomeCompleto %><br>
+                <strong>CPF:</strong> <%= paciente.cpf %><br>
+                <strong>Data Marcada:</strong> <%= paciente.diaMarcado.toISOString().split('T')[0] %><br>
+                <strong>Hora Marcada:</strong> <%= paciente.horaMarcada %>
+              </div>
+              <div>
+                <a href="/pacientes/<%= paciente.cpf %>/edit" class="btn btn-warning btn-sm">Editar</a>
+                <form action="/pacientes/<%= paciente.cpf %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
+                </form>
+              </div>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+  <footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2023 Clínica Médica. Todos os direitos reservados.</p>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

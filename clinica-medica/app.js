@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const session = require('express-session');
 const pacienteRouter = require('./routes/paciente');
 
 const app = express();
@@ -13,6 +14,12 @@ app.set('view engine', 'ejs');
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: true
+}));
 
 // Rotas
 app.use('/pacientes', pacienteRouter);
@@ -27,4 +34,8 @@ app.use((req, res, next) => {
   res.status(404).send('Página não encontrada');
 });
 
-module.exports = app;
+// Iniciar o servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});

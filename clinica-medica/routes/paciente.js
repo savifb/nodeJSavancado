@@ -23,28 +23,32 @@ function validarCPF(cpf) {
 router.get('/', async (req, res) => {
   try {
     const pacientes = await Paciente.findAll();
-    res.render('pacientes/index', { pacientes });
+    const error = req.session.error;
+    req.session.error = null; // Limpar a mensagem de erro após exibi-la
+    res.render('index', { title: 'Lista de Pacientes', pacientes, error });
   } catch (error) {
     res.status(500).send('Erro ao listar pacientes: ' + error.message);
   }
 });
 
-// Formulário para inserir paciente
+// Formulário para adicionar paciente
 router.get('/new', (req, res) => {
-  res.render('pacientes/new');
+  res.render('new');
 });
 
 // Inserir paciente
 router.post('/', async (req, res) => {
   const { cpf, nomeCompleto, idade, diaMarcado, horaMarcada } = req.body;
   if (!validarCPF(cpf)) {
-    return res.status(400).send('CPF inválido');
+    req.session.error = 'CPF inválido';
+    return res.redirect('/pacientes');
   }
   try {
     await Paciente.create({ cpf, nomeCompleto, idade, diaMarcado, horaMarcada });
     res.redirect('/pacientes');
   } catch (error) {
-    res.status(400).send('Erro ao inserir paciente: ' + error.message);
+    req.session.error = 'Erro ao inserir paciente: ' + error.message;
+    res.redirect('/pacientes');
   }
 });
 
@@ -55,39 +59,9 @@ router.get('/:cpf/edit', async (req, res) => {
     if (!paciente) {
       return res.status(404).send('Paciente não encontrado');
     }
-    res.render('pacientes/edit', { paciente });
+    res.render('edit', { paciente });
   } catch (error) {
     res.status(500).send('Erro ao buscar paciente: ' + error.message);
-  }
-});
-
-// Atualizar paciente
-router.put('/:cpf', async (req, res) => {
-  const { nomeCompleto, idade, diaMarcado, horaMarcada } = req.body;
-  if (!validarCPF(req.params.cpf)) {
-    return res.status(400).send('CPF inválido');
-  }
-  try {
-    const [updated] = await Paciente.update({ nomeCompleto, idade, diaMarcado, horaMarcada }, { where: { cpf: req.params.cpf } });
-    if (!updated) {
-      return res.status(404).send('Paciente não encontrado');
-    }
-    res.redirect('/pacientes');
-  } catch (error) {
-    res.status(400).send('Erro ao atualizar paciente: ' + error.message);
-  }
-});
-
-// Apagar paciente
-router.delete('/:cpf', async (req, res) => {
-  try {
-    const deleted = await Paciente.destroy({ where: { cpf: req.params.cpf } });
-    if (!deleted) {
-      return res.status(404).send('Paciente não encontrado');
-    }
-    res.redirect('/pacientes');
-  } catch (error) {
-    res.status(400).send('Erro ao apagar paciente: ' + error.message);
   }
 });
 
