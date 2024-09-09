@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const session = require('express-session');
-const pacienteRouter = require('./routes/paciente');
+const pacienteRouter = require('./routes/paciente'); // Verifique se o caminho está correto
 
 const app = express();
 
@@ -34,8 +34,5 @@ app.use((req, res, next) => {
   res.status(404).send('Página não encontrada');
 });
 
-// Iniciar o servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Exportar a instância do Express
+module.exports = app;
